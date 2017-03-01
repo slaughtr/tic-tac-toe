@@ -60,13 +60,20 @@ function Space(){
   this.spaceArrays = [[0,"X",0],["O",0,0],[0,0,"X"]];
   this.isMarked = function(row, column) {
     if (this.spaceArrays[row][column] === 0) return false;
-  }
+  };
   this.mark = function(row, column, mark) {
     if (this.isMarked(row, column) === false) {
-      x = row*300+150;
-      y = column*300+150;
+      this.spaceArrays[row][column] = mark;
     }
-  }
+  };
+  this.getSpaceClicked = function(canvas, evt) {
+    var rect = Board.canvas.getBoundingClientRect();
+      return {
+        x: (evt.clientX-rect.left)/(rect.right-rect.left)*Board.canvas.width,
+        y: (evt.clientY-rect.top)/(rect.bottom-rect.top)*Board.canvas.height
+      };
+  };
+
 }
 
 var updateGame = function(playerX, playerO, board){
@@ -85,11 +92,18 @@ function startGame(playerXName, playerOName){
   board.start();
   board.draw(space.spaceArrays);
 
+  Board.canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+
+      }, false);
   // updateGame(playerX, playerO, board);
 
 }
 
 $(document).ready(function(){
+  $("canvas").click(function(){
+
+  })
   $("form#playerForm").submit(function() {
     event.preventDefault();
     var playerXName = $("#playerX").val();
