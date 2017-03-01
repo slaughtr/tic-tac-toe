@@ -54,6 +54,10 @@ function Board(){
       }
     }
   };
+  this.clear = function() {
+    var ctx = this.canvas.getContext("2d");
+    ctx.clearRect(0, 0, board.canvas.width, board.canvas.height);
+  };
 }
 
 function Space(){
@@ -66,19 +70,18 @@ function Space(){
       this.spaceArrays[row][column] = mark;
     }
   };
-  this.getSpaceClicked = function(canvas, evt) {
-    var rect = Board.canvas.getBoundingClientRect();
+  this.getSpaceClicked = function(board, evt) {
+    var rect = board.canvas.getBoundingClientRect();
       return {
-        x: (evt.clientX-rect.left)/(rect.right-rect.left)*Board.canvas.width,
-        y: (evt.clientY-rect.top)/(rect.bottom-rect.top)*Board.canvas.height
+        x: (evt.clientX-rect.left)/(rect.right-rect.left)*900,
+        y: (evt.clientY-rect.top)/(rect.bottom-rect.top)*900
       };
   };
-
+  this.currentMousePos;
 }
 
-var updateGame = function(playerX, playerO, board){
-  board.canvas.clearRect(0, 0, board.canvas.width, board.canvas.height);
-  board.draw();
+var updateGame = function(playerX, playerO, board, space){
+  board.draw(space.spaceArrays);
 }
 
 function startGame(playerXName, playerOName){
@@ -87,23 +90,24 @@ function startGame(playerXName, playerOName){
   var playerO = new Player(playerOName, "O");
   var firstPlayer = Math.round(Math.random()) ? "X" : "O";
 
-  space = new Space();
+  var space = new Space();
   var board = new Board();
   board.start();
   board.draw(space.spaceArrays);
 
-  Board.canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
-
+  board.canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = space.getSpaceClicked(board, evt);
+        space.currentMousePos = mousePos;
       }, false);
-  // updateGame(playerX, playerO, board);
 
+  updateGame(playerX, playerO, board, space);
+
+  $("html").click(function(){
+    console.log(space.currentMousePos);
+  });
 }
 
 $(document).ready(function(){
-  $("canvas").click(function(){
-
-  })
   $("form#playerForm").submit(function() {
     event.preventDefault();
     var playerXName = $("#playerX").val();
@@ -113,6 +117,7 @@ $(document).ready(function(){
     $("#canvasDiv").show();
 
     startGame(playerXName, playerOName);
+
 
   });
 });
