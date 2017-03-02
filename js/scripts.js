@@ -6,13 +6,14 @@ function Player(name, mark, computer){
 }
 
 //AI below
-Player.prototype.ai = function(difficulty) {
+Player.prototype.ai = function(space, difficulty) {
   if(this.computer === true && difficulty === "easy") {
-    var randFirstIndex = Math.floor((Math.random() * 2) + 1);
-    var randSecondIndex = Math.floor((Math.random() * 2) + 1);
-    if (space.isMarked(randFirstIndex, randSecondIndex) === "false") {
+    var randFirstIndex = Math.floor((Math.random() * 3) + 1);
+    var randSecondIndex = Math.floor((Math.random() * 3) + 1);
+    if (space.isMarked(randFirstIndex, randSecondIndex) === false) {
+      console.log("trying to mark : " +randFirstIndex+ " " + randSecondIndex)
       space.mark(randFirstIndex, randSecondIndex, "O");
-      board.nextTurn;
+      board.nextTurn();
     }
   }
 }
@@ -161,13 +162,12 @@ var updateGame = function(playerX, playerO, board, space){
     clearInterval(window.stopInterval);
   }
 
-  if(playerO.computer === true){
-    console.log("we have a computer here")
-    if(board.currentTurn === "O"){
-      playerO.ai("easy");
-
-  } else{
+  if(playerO.computer === true && board.currentTurn === "O"){
+    console.log("it's the computer's tuuuuurn")
+      playerO.ai(space, "easy");
+    } else {
     $("#canvasDiv canvas").click(function(){
+      console.log("my turn")
       var x = space.currentMousePos.x;
       var y = space.currentMousePos.y;
       if((x < 300 && y < 300) && (!space.isMarked(0, 0))){
@@ -208,7 +208,7 @@ var updateGame = function(playerX, playerO, board, space){
       }
     });
   }
-
+}
 
 // Set up game
 function startGame(playerXName, playerOName){
