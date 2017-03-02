@@ -2,31 +2,21 @@
 function Player(name, mark, computer){
   this.name = name;
   this.mark = mark;
-  this.computer = false;
+  this.computer = computer;
 }
 
 //AI below
 Player.prototype.ai = function(difficulty) {
-  if (this.computer === true && difficulty = "easy") {
-    if  (board.currentTurn === "O") {
-      var computerSpace = easyAI();
-      if (space.isMarked(row, column) === "false")
+  if(this.computer === true && difficulty === "easy") {
+    var randFirstIndex = Math.floor((Math.random() * 2) + 1);
+    var randSecondIndex = Math.floor((Math.random() * 2) + 1);
+    if (space.isMarked(randFirstIndex, randSecondIndex) === "false") {
+      space.mark(randFirstIndex, randSecondIndex, "O");
+      board.nextTurn;
     }
   }
 }
 
-function easyAI() {
-  var randSpace = Math.floor((Math.random() * 9) + 1);
-  if (randSpace === 1) return space.spaceArrays[0][0];
-  if (randSpace === 2) return space.spaceArrays[0][1];
-  if (randSpace === 3) return space.spaceArrays[0][2];
-  if (randSpace === 4) return space.spaceArrays[1][0];
-  if (randSpace === 5) return space.spaceArrays[1][1];
-  if (randSpace === 6) return space.spaceArrays[1][2];
-  if (randSpace === 7) return space.spaceArrays[2][0];
-  if (randSpace === 8) return space.spaceArrays[2][1];
-  if (randSpace === 9) return space.spaceArrays[2][2];
-}
 
 // Board Object
 function Board(firstPlayer){
@@ -171,60 +161,68 @@ var updateGame = function(playerX, playerO, board, space){
     clearInterval(window.stopInterval);
   }
 
-  $("#canvasDiv canvas").click(function(){
-    var x = space.currentMousePos.x;
-    var y = space.currentMousePos.y;
-    if((x < 300 && y < 300) && (!space.isMarked(0, 0))){
-      space.mark(0, 0, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 600 && x > 300 && y < 300) && (!space.isMarked(1, 0))){
-      space.mark(1, 0, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 900 && x > 600 && y < 300) && (!space.isMarked(2, 0))){
-      space.mark(2, 0, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 300 && y > 300 && y < 600) && (!space.isMarked(0, 1))){
-      space.mark(0, 1, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 600 && x > 300 && y > 300 && y < 600) && (!space.isMarked(1, 1))){
-      space.mark(1, 1, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 900 && x > 600 && y > 300 && y < 600) && (!space.isMarked(2, 1))){
-      space.mark(2, 1, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 300 && y > 600) && (!space.isMarked(0, 2))){
-      space.mark(0, 2, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 600 && x > 300 && y > 600) && (!space.isMarked(1, 2))){
-      space.mark(1, 2, board.currentTurn);
-      board.nextTurn();
-    }
-    if((x < 900 && x > 600 && y > 600) && (!space.isMarked(2, 2))){
-      space.mark(2, 2, board.currentTurn);
-      board.nextTurn();
-    }
-  });
-}
+  if(playerO.computer === true){
+    console.log("we have a computer here")
+    if(board.currentTurn === "O"){
+      playerO.ai("easy");
+
+  } else{
+    $("#canvasDiv canvas").click(function(){
+      var x = space.currentMousePos.x;
+      var y = space.currentMousePos.y;
+      if((x < 300 && y < 300) && (!space.isMarked(0, 0))){
+        space.mark(0, 0, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 600 && x > 300 && y < 300) && (!space.isMarked(1, 0))){
+        space.mark(1, 0, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 900 && x > 600 && y < 300) && (!space.isMarked(2, 0))){
+        space.mark(2, 0, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 300 && y > 300 && y < 600) && (!space.isMarked(0, 1))){
+        space.mark(0, 1, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 600 && x > 300 && y > 300 && y < 600) && (!space.isMarked(1, 1))){
+        space.mark(1, 1, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 900 && x > 600 && y > 300 && y < 600) && (!space.isMarked(2, 1))){
+        space.mark(2, 1, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 300 && y > 600) && (!space.isMarked(0, 2))){
+        space.mark(0, 2, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 600 && x > 300 && y > 600) && (!space.isMarked(1, 2))){
+        space.mark(1, 2, board.currentTurn);
+        board.nextTurn();
+      }
+      if((x < 900 && x > 600 && y > 600) && (!space.isMarked(2, 2))){
+        space.mark(2, 2, board.currentTurn);
+        board.nextTurn();
+      }
+    });
+  }
+
 
 // Set up game
 function startGame(playerXName, playerOName){
   // console.log("startGame called.")
   if (playerOName === "easyComputer") {
-    var playerX = new Player(playerXName, "X");
-    var easyComputer = new Player(playerOName, "O");
+    var playerX = new Player(playerXName, "X", false);
+    var playerO = new Player(playerOName, "O", true);
   } else if (playerOName === "hardComputer") {
-    var playerX = new Player(playerXName, "X");
-    var hardComputer = new Player(playerOName, "O");
-  }
-  var playerX = new Player(playerXName, "X");
-  var playerO = new Player(playerOName, "O");
+    var playerX = new Player(playerXName, "X", false);
+    var playerO = new Player(playerOName, "O");
+  } else {
+  var playerX = new Player(playerXName, "X", false);
+  var playerO = new Player(playerOName, "O", false);
+}
   var firstPlayer = Math.round(Math.random()) ? "X" : "O";
 
   var space = new Space();
@@ -258,15 +256,18 @@ $(document).ready(function(){
 
     startGame(playerXName, playerOName);
   });
+
   $("#computerButton").click(function(){
     $("#gameSelect").hide();
     $("#compDifficulty").show();
   });
+
   $("#easyButton").click(function(){
     $("#compDifficulty").hide();
     $("#canvasDiv").show();
     startGame("Player One", "easyComputer");
   });
+
   $("#hardButton").click(function(){
     $("#compDifficulty").hide();
     $("#canvasDiv").show();
