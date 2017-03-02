@@ -82,6 +82,18 @@ function Space(){
     [0,0,0]];
   this.currentMousePos;
 }
+//
+// function AI() {
+//   var 1 = space.spaceArrays[0][0];
+//   var 2 = space.spaceArrays[0][1];
+//   var 3 = space.spaceArrays[0][2];
+//   var 4 = space.spaceArrays[1][0];
+//   var 5 = space.spaceArrays[1][1];
+//   var 6 = space.spaceArrays[1][2];
+//   var 7 = space.spaceArrays[2][0];
+//   var 8 = space.spaceArrays[2][1];
+//   var 9 = space.spaceArrays[2][2];
+// }
 
 Space.prototype.isMarked = function(row, column) {
   if (this.spaceArrays[row][column] !== 0){
@@ -191,6 +203,11 @@ var updateGame = function(playerX, playerO, board, space){
 // Set up game
 function startGame(playerXName, playerOName){
   // console.log("startGame called.")
+  if (playerOName === "easyComputer") {
+
+  } else if (playerOName === "hardComputer") {
+
+  }
   var playerX = new Player(playerXName, "X");
   var playerO = new Player(playerOName, "O");
   var firstPlayer = Math.round(Math.random()) ? "X" : "O";
@@ -210,6 +227,12 @@ function startGame(playerXName, playerOName){
 }
 
 $(document).ready(function(){
+
+  $("#twoPlayerButton").click(function(){
+    $("#gameSelect").hide();
+    $("#startForm").show();
+  });
+
   $("form#playerForm").submit(function(event) {
     event.preventDefault();
     var playerXName = $("#playerX").val();
@@ -219,5 +242,19 @@ $(document).ready(function(){
     $("#canvasDiv").show();
 
     startGame(playerXName, playerOName);
+  });
+  $("#computerButton").click(function(){
+    $("#gameSelect").hide();
+    $("#compDifficulty").show();
+  });
+  $("#easyButton").click(function(){
+    $("#compDifficulty").hide();
+    $("#canvasDiv").show();
+    startGame("Player One", "easyComputer");
+  });
+  $("#hardButton").click(function(){
+    $("#compDifficulty").hide();
+    $("#canvasDiv").show();
+    startGame("Player One", "hardComputer");
   });
 });

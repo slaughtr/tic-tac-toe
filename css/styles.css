@@ -1,3 +1,11 @@
 #canvasDiv {
   display: none;
 }
+
+#startForm {
+  display: none;
+}
+
+#compDifficulty {
+  display: none;
+}
