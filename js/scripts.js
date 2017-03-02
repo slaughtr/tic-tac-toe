@@ -1,7 +1,31 @@
 // Player Object
-function Player(name, mark){
+function Player(name, mark, computer){
   this.name = name;
   this.mark = mark;
+  this.computer = false;
+}
+
+//AI below
+Player.prototype.ai = function(difficulty) {
+  if (this.computer === true && difficulty = "easy") {
+    if  (board.currentTurn === "O") {
+      var computerSpace = easyAI();
+      if (space.isMarked(row, column) === "false")
+    }
+  }
+}
+
+function easyAI() {
+  var randSpace = Math.floor((Math.random() * 9) + 1);
+  if (randSpace === 1) return space.spaceArrays[0][0];
+  if (randSpace === 2) return space.spaceArrays[0][1];
+  if (randSpace === 3) return space.spaceArrays[0][2];
+  if (randSpace === 4) return space.spaceArrays[1][0];
+  if (randSpace === 5) return space.spaceArrays[1][1];
+  if (randSpace === 6) return space.spaceArrays[1][2];
+  if (randSpace === 7) return space.spaceArrays[2][0];
+  if (randSpace === 8) return space.spaceArrays[2][1];
+  if (randSpace === 9) return space.spaceArrays[2][2];
 }
 
 // Board Object
@@ -82,18 +106,7 @@ function Space(){
     [0,0,0]];
   this.currentMousePos;
 }
-//
-// function AI() {
-//   var 1 = space.spaceArrays[0][0];
-//   var 2 = space.spaceArrays[0][1];
-//   var 3 = space.spaceArrays[0][2];
-//   var 4 = space.spaceArrays[1][0];
-//   var 5 = space.spaceArrays[1][1];
-//   var 6 = space.spaceArrays[1][2];
-//   var 7 = space.spaceArrays[2][0];
-//   var 8 = space.spaceArrays[2][1];
-//   var 9 = space.spaceArrays[2][2];
-// }
+
 
 Space.prototype.isMarked = function(row, column) {
   if (this.spaceArrays[row][column] !== 0){
@@ -204,9 +217,11 @@ var updateGame = function(playerX, playerO, board, space){
 function startGame(playerXName, playerOName){
   // console.log("startGame called.")
   if (playerOName === "easyComputer") {
-
+    var playerX = new Player(playerXName, "X");
+    var easyComputer = new Player(playerOName, "O");
   } else if (playerOName === "hardComputer") {
-
+    var playerX = new Player(playerXName, "X");
+    var hardComputer = new Player(playerOName, "O");
   }
   var playerX = new Player(playerXName, "X");
   var playerO = new Player(playerOName, "O");
